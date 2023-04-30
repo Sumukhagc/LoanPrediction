@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler,OneHotEncoder
+from sklearn.preprocessing import StandardScaler,OrdinalEncoder
 from sklearn.pipeline import Pipeline
 from src.utils import save_obj
 @dataclass
@@ -20,11 +20,9 @@ class DataTransformation:
 
     def preprocessor_data(self):
         try:
-            data=pd.read_csv('artifact/train.csv')
+            data=pd.read_csv('artifact/X_train.csv')
             numerical_features=[col for col in data.columns if data[col].dtype!='O']
             categorical_features=[col for col in data.columns if data[col].dtype=='O']
-            print("Numerical columns",numerical_features)
-            print("categorical columns",categorical_features)
             numerical_pipeline=Pipeline(
                 steps=[
                 ("impute",SimpleImputer(strategy='median')),
@@ -34,8 +32,8 @@ class DataTransformation:
             categorical_pipeline=Pipeline(
                 steps=[
                 ("impute",SimpleImputer(strategy='most_frequent')),
-                ("encoder",OneHotEncoder()),
-                ("scaler",StandardScaler(with_mean=False))
+                ("encoder",OrdinalEncoder()),
+                ("scaler",StandardScaler())
                 ]
             )
             
@@ -48,16 +46,17 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e,sys)
-    def initiate_data_tranformation(self,train_path,test_path):
+    def initiate_data_tranformation(self):
         try:
             logging.info("Train and test data read successfully..")
             preprocessor=self.preprocessor_data()
-            target_var='GrAppv'
-            train=pd.read_csv(train_path)
-            test=pd.read_csv(test_path) 
+            X_train=pd.read_csv('artifact\X_train.csv')
+            X_test=pd.read_csv('artifact\X_test.csv') 
+            Y_train=pd.read_csv('artifact\Y_train.csv') 
+            Y_test=pd.read_csv('artifact\Y_test.csv') 
             logging.info("Preprocessing on Training and Testing data started... ")
-            train_X_transformed=preprocessor.fit_transform(train)
-            test_X_transformed= preprocessor.fit_transform(test)
+            train_X_transformed=preprocessor.fit_transform(X_train)
+            test_X_transformed= preprocessor.fit_transform(X_test)
             logging.info("Preprocessing on Training and Testing data is completed... ")
             
             save_obj(
@@ -65,5 +64,6 @@ class DataTransformation:
                 obj=preprocessor
             )
             logging.info('Saved preprecessor pickle file')
+            return (train_X_transformed,test_X_transformed,Y_train,Y_test)
         except Exception as e:
             raise CustomException(e,sys)        

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Loan Prediction System</title>
+  </head>
+  <h1 class="text-center">Loan Prediction System</h1>
+  <body>
+  <div class="bg"> 
+    <form action="/predict" method="post">
+      {% csrf_token %}
+        <div class="row justify-content-center">
+        <div class="col-6">
+        <div class="form-group">
+          <label for="naics"><b>NAICS</b></label>
+          <input type="number" class="form-control" name="naics" placeholder="Enter NAICS (North American Industry Classification System)" required>
+        </div>
+        <div class="form-group">
+            <label for="term"><b>Loan term in months</b></label>
+            <input type="number" class="form-control" name="term" placeholder="Enter Loan term in months" required>
+        </div>
+        <div class="form-group">
+            <label for="noemp"><b>Number of Employees</b></label>
+            <input type="number" class="form-control" name="noemp" placeholder="Enter Number of employees" required>
+        </div>
+        <!-- NewExist Dropdown -->
+        <label for="retainedjob"><b>NewAge or Existing Business</b></label>        
+    
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="age" value="1.0" >
+            <label class="form-check-label" for="urban">NewAge Business</label>
+        </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="age" value="0.0">
+        <label class="form-check-label" for="rural">
+         Existing Business
+        </label>
+      </div>
+        <div class="form-group">
+            <label for="createjob"><b>Number of jobs created</b></label>
+            <input type="number" class="form-control" name="nojob" placeholder="Enter Number of Jobs created" required>
+        </div>
+        <div class="form-group">
+            <label for="retainedjob"><b>Number of jobs retained</b></label>
+            <input type="number" class="form-control" name="noretained" placeholder="Enter Number of Jobs retained" required>
+        </div>
+
+        <!-- Urban Rural-->
+    <label for="retainedjob"><b>Urban or Rural?</b></label>        
+    
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="urbanrural" value="1.0" >
+        <label class="form-check-label" for="urban">Urban</label>
+    </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="urbanrural" value="2.0" >
+    <label class="form-check-label" for="rural">
+      Rural
+    </label>
+  </div>
+
+  <!--RevLineCr-->
+  <label for="retainedjob"><b>Revolving line of credit</b></label>        
+    
+  <div class="form-check">
+      <input class="form-check-input" type="radio" name="revlinecr" value="Y" >
+      <label class="form-check-label" for="pif">Yes</label>
+  </div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="revlinecr" value="N" >
+  <label class="form-check-label" for="chgoff">
+    No
+  </label>
+</div> 
+         <!--LowDoc-->
+<br>
+<label for="retainedjob"><b>LowDoc Loan Program</b></label>        
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="lowdoc" value="Y" >
+    <label class="form-check-label" for="pif">Yes</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="lowdoc" value="N" >
+<label class="form-check-label" for="chgoff">
+  No 
+</label>
+</div> 
+
+<div class="form-group">
+  <label for="disbursment"><b>Disbursment Gross</b></label>
+  <input type="number" class="form-control" name="disbursment" placeholder="Enter Amount disbursed" required>
+</div>
+<div class="form-group">
+  <label for="balance"><b>Balance Gross</b></label>
+  <input type="number" class="form-control" name="balance" placeholder="Enter Gross amount outstanding" required>
+</div>
+        <!-- MIS status-->
+        <label for="retainedjob"><b>MIS Status</b></label>        
+    
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="mis" value="P I F" >
+        <label class="form-check-label" for="pif">Paid in full</label>
+    </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mis" value="CHGOFF" >
+    <label class="form-check-label" for="chgoff">
+      Charged-off
+    </label>
+  </div>
+        <div class="form-group">
+            <label for="chgoff"><b>Charged Off Amount</b></label>
+            <input type="number" class="form-control" name="chgoff" placeholder="Enter Charged-off amount" required>
+        </div>
+        
+       
+      <br>    
+      <div class="container">
+        <div class="row">
+          <div class="col text-center">
+            <button class="btn btn-primary">Predict Now!</button>
+          </div>
+        </div>
+      </div>
+        </div>
+        </div>
+      </form>
+    </div> 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
