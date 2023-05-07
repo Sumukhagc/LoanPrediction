@@ -4,9 +4,13 @@ from src.logger import logging
 from src.exception import CustomException
 from src.utils import load_model
 import pandas as pd
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def home(request):
     return render(request,"home.html")
 
+@csrf_exempt
 def predict(request):
     train=pd.read_csv('artifact/X_train.csv')
     preprocessor_path='artifact/preprocessor.pkl'
